@@ -99,7 +99,9 @@ pub async fn run() {
         }
     };
 
-    let (v, f) = load_mesh("assets/camelhead.obj").await.unwrap();
+    let (v, f) = load_mesh("uvat-wasm-demo/assets/camelhead.obj")
+        .await
+        .unwrap();
     let init = |state: &mut State| {
         state.register_surface("Surface".into(), v, f);
     };
