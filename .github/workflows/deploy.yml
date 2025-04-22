@@ -14,6 +14,8 @@ jobs:
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
+        with:
+          target: wasm32-unknown-unknown
 
       - name: Cache Cargo binaries
         uses: actions/cache@v4
@@ -55,7 +57,7 @@ jobs:
             echo "wasm-opt is cached and already installed."
           fi
 
-      - name: Build ff_egui_app with Trunk
+      - name: Build app with Trunk
         env:
           URL_PATH: "uvat-wasm-demo" # URL_PATH should match public-url
         run: trunk build --release --public-url "/uvat-wasm-demo/"
