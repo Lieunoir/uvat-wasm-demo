@@ -1,0 +1,74 @@
+name: deploy.yml
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-bin-trunk-0.21.4
+          restore-keys: |
+            ${{ runner.os }}-cargo-bin
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-0001-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-0001-
+
+      - name: Install Trunk
+        run: |
+          if ! command -v trunk &> /dev/null; then
+            cargo install trunk
+          else
+            echo "Trunk is cached and already installed."
+          fi
+
+      - name: Install wasm-bindgen-cli
+        run: |
+          if ! command -v wasm-bindgen &> /dev/null; then
+            cargo install wasm-bindgen-cli
+          else
+            echo "wasm-bindgen-cli is cached and already installed."
+          fi
+
+      - name: Install wasm-opt
+        run: |
+          if ! command -v wasm-opt &> /dev/null; then
+            cargo install wasm-opt
+          else
+            echo "wasm-opt is cached and already installed."
+          fi
+
+      - name: Build ff_egui_app with Trunk
+        env:
+          URL_PATH: "uvat-wasm-demo" # URL_PATH should match public-url
+        run: trunk build --release --public-url "/uvat-wasm-demo/"
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          #   ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+          #   BRANCH: gh-pages
+          folder: dist/
