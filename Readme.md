@@ -1,6 +1,6 @@
 # UVAT wasm demo
 
-Click here to access the web demo available.
+[Click here to access the web demo.](https://lieunoir.github.io/uvat-wasm-demo/)
 
 Repo for the web demo of [uvat-rs](https://github.com/Lieunoir/uvat-rs). Also serves as a demo of web integration for [deuxfleurs](https://github.com/Lieunoir/deuxfleurs).
 
