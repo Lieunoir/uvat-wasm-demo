@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+<script type="module">
+import init, * as bindings from '/uvat-wasm-demo/uvat-wasm-demo-23681c84c66f83f6.js';
+const wasm = await init({ module_or_path: '/uvat-wasm-demo/uvat-wasm-demo-23681c84c66f83f6_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+        
+        <title>UVAT demo</title>
+    <link rel="modulepreload" href="/uvat-wasm-demo/uvat-wasm-demo-23681c84c66f83f6.js" crossorigin="anonymous" integrity="sha384-v8en/RUsHd6udj3js+N6mPhluY6Uu4HyfU/u4B3A/VQRqKtOB1nETkLnTiZZhEis"><link rel="modulepreload" href="/uvat-wasm-demo/snippets/deuxfleurs-ce5ae6692bdb31f2/src/save.js" crossorigin="anonymous" integrity="sha384-HqaIPsxCS0I8JMcfMUfWptqlUP9zqN3xgsWZGPfQdZGmSDFV9gPOpZN/bcn7Ps3l"><link rel="preload" href="/uvat-wasm-demo/uvat-wasm-demo-23681c84c66f83f6_bg.wasm" crossorigin="anonymous" integrity="sha384-BTlRk1994c25mdjiQxaGwfVc0QSDLjiLRmqUX+e4Rufo2UCadeBK91WXhsfWDONk" as="fetch" type="application/wasm"></head>
+
+    <body style="margin: 0; overflow: hidden" id="deuxfleurs">
+        <style>
+            canvas {
+                background-color: black;
+                width: 100% !important;
+                height: 100vh !important;
+            }
+        </style>
+    </body>
+</html>
