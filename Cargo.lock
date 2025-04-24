@@ -3974,7 +3974,7 @@ checksum = "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be"
 [[package]]
 name = "uvat-rs"
 version = "0.1.0"
-source = "git+https://github.com/Lieunoir/uvat-rs?rev=88e8a0e#88e8a0ede630d74eb70972e3d914f42c52c92d24"
+source = "git+https://github.com/Lieunoir/uvat-rs?rev=c4b1585#c4b1585c7c04e48cf43854211a627c52cbf1c683"
 dependencies = [
  "faer",
  "faer-traits",

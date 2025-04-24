@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-uvat-rs = { git = "https://github.com/Lieunoir/uvat-rs", rev = "88e8a0e" }
+uvat-rs = { git = "https://github.com/Lieunoir/uvat-rs", rev = "c4b1585" }
 deuxfleurs = { git = "https://github.com/Lieunoir/deuxfleurs", rev = "7bbf84c" }
 faer = "0.22.4"
 pollster = "0.4.0"
