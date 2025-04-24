@@ -1,5 +1,6 @@
 use core::f32;
 use core::f64;
+use deuxfleurs::egui::Widget;
 use deuxfleurs::load_mesh;
 use deuxfleurs::types::SurfaceIndices;
 use deuxfleurs::ui::LoadObjButton;
@@ -19,10 +20,53 @@ pub async fn run() {
     // Temp fix for performance
     faer::set_global_parallelism(faer::Par::Rayon(core::num::NonZero::new(1).unwrap()));
     let mut options = UVATOptions::default();
+    let solver: std::cell::RefCell<Option<UVAT<u32>>> = std::cell::RefCell::new(None);
+    let v_values = std::cell::RefCell::new(Vec::new());
+    let p = std::cell::RefCell::new(Vec::new());
+    let mut running = false;
+    let mut ran_once = false;
 
     let callback = move |ui: &mut egui::Ui, state: &mut State| {
+        if running {
+            let mut v_values = v_values.borrow_mut();
+            let mut p = p.borrow_mut();
+            let surface = state.get_surface_mut("Surface").unwrap();
+            let f = &surface.geometry().indices;
+            let f = match f {
+                SurfaceIndices::Triangles(f) => f.clone(),
+                _ => panic!(),
+            };
+            running = !solver
+                .borrow_mut()
+                .as_mut()
+                .unwrap()
+                .single_step(&f, &mut p, &mut v_values);
+
+            // Convert to f32 and corner param for displaying
+            let p: Vec<_> = p
+                .iter()
+                .map(|row| [row[0] as f32, row[1] as f32, 0.])
+                .collect();
+            let new_uv: Vec<_> = f
+                .as_flattened()
+                .iter()
+                .map(|&i| [p[i as usize][0], p[i as usize][1]])
+                .collect();
+            surface.add_corner_uv_map("UV map".into(), new_uv);
+            surface.add_face_scalar("V".into(), &*v_values);
+            surface.set_data(Some("V".into()));
+            let param = state
+                .register_surface("UVAT parameterization".into(), p, f)
+                .show_edges(true);
+            param.add_face_scalar("V".to_string(), &*v_values);
+            param.set_data(Some("V".into()));
+        }
+
         ui.label("Load a triangular mesh homeomorphic to a disk or of genus 0, then run UVAT (this may take a while to compute).");
-        ui.add(LoadObjButton::new("Load mesh", "Surface", state));
+        let response = LoadObjButton::new("Load mesh", "Surface", state).ui(ui);
+        if response.clicked() {
+            ran_once = false;
+        }
         ui.add(
             egui::Slider::new(&mut options.lambda, 0.0..=10.0)
                 .text("lambda")
@@ -71,31 +115,19 @@ pub async fn run() {
                     .collect();
                 surface.add_corner_uv_map("Tutte parameterization".into(), verts_c);
 
-                let mut p = tutte;
-
-                let mut v_values = vec![1.; f.len()];
-                let mut uvat_solver = UVAT::new(&v, &f, &mut p, options.clone());
-                while !uvat_solver.single_step(&f, &mut p, &mut v_values) {}
-
-                // Convert to f32 and corner param for displaying
-                let v_values: Vec<_> = v_values.into_iter().map(|v| v as f32).collect();
-                let p: Vec<_> = p
-                    .into_iter()
-                    .map(|row| [row[0] as f32, row[1] as f32, 0.])
-                    .collect();
-                let new_uv: Vec<_> = f
-                    .as_flattened()
-                    .iter()
-                    .map(|&i| [p[i as usize][0], p[i as usize][1]])
-                    .collect();
-                surface.add_corner_uv_map("UV map".into(), new_uv);
-                surface.add_face_scalar("V".into(), v_values.clone());
-                surface.set_data(Some("UV map".into()));
-                state
-                    .register_surface("UVAT parameterization".into(), p, f)
-                    .show_edges(true)
-                    .add_face_scalar("V".to_string(), v_values);
+                *p.borrow_mut() = tutte;
+                *v_values.borrow_mut() = vec![1.; f.len()];
+                *solver.borrow_mut() =
+                    Some(UVAT::new(&v, &f, &mut *p.borrow_mut(), options.clone()));
+                running = true;
+                ran_once = true;
             }
+        }
+
+        if running {
+            ui.label("Running...");
+        } else if ran_once {
+            ui.label("Done!");
         }
     };
 
