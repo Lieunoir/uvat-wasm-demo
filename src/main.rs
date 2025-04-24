@@ -99,9 +99,10 @@ pub async fn run() {
         }
     };
 
-    let (v, f) = load_mesh("uvat-wasm-demo/assets/camelhead.obj")
-        .await
-        .unwrap();
+    let url_path = option_env!("URL_PATH").unwrap_or(".");
+    let mesh_path = std::path::Path::new(url_path).join("./assets/camelhead.obj");
+    let mesh_str = mesh_path.to_str().unwrap();
+    let (v, f) = load_mesh(mesh_str).await.unwrap();
     let init = |state: &mut State| {
         state.register_surface("Surface".into(), v, f);
     };
