@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-uvat-rs = { git = "https://github.com/Lieunoir/uvat-rs", rev = "c4b1585" }
-deuxfleurs = { git = "https://github.com/Lieunoir/deuxfleurs", rev = "7bbf84c" }
-faer = "0.22.4"
+uvat-rs = { git = "https://github.com/Lieunoir/uvat-rs", rev = "f7723f5" }
+deuxfleurs = { git = "https://github.com/Lieunoir/deuxfleurs", rev = "4e1457d" }
+faer = "0.22.6"
 pollster = "0.4.0"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]

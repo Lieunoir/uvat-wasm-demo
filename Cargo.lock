@@ -640,7 +640,7 @@ checksum = "930c7171c8df9fb1782bdf9b918ed9ed2d33d1d22300abb754f9085bc48bf8e8"
 [[package]]
 name = "deuxfleurs"
 version = "0.1.0"
-source = "git+https://github.com/Lieunoir/deuxfleurs?rev=7bbf84c#7bbf84cc1d6d1c793a75f37a2015929db77ec464"
+source = "git+https://github.com/Lieunoir/deuxfleurs?rev=4e1457d#4e1457d46ae13eaaca8a68b8098cd964f0cf60da"
 dependencies = [
  "ahash",
  "anyhow",
@@ -654,6 +654,7 @@ dependencies = [
  "egui",
  "egui-wgpu",
  "egui-winit",
+ "egui_plot",
  "env_logger",
  "epaint",
  "getrandom 0.2.15",
@@ -803,6 +804,17 @@ dependencies = [
  "raw-window-handle 0.6.2",
  "web-time",
  "winit",
+]
+
+[[package]]
+name = "egui_plot"
+version = "0.31.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1794c66fb727dac28dffed2e4b548e5118d1cccc331d368a35411d68725dde71"
+dependencies = [
+ "ahash",
+ "egui",
+ "emath",
 ]
 
 [[package]]
@@ -969,9 +981,9 @@ dependencies = [
 
 [[package]]
 name = "faer"
-version = "0.22.4"
+version = "0.22.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "115439be42d6cd604201bb4a5675810861a3224d2838103d9ec395d7617a3e0c"
+checksum = "49fce40ad65c366fbc6cd70a99d09d1008f075280bf2455e558e163c82913a9f"
 dependencies = [
  "bytemuck",
  "dyn-stack",
@@ -986,7 +998,7 @@ dependencies = [
  "num-complex",
  "num-traits",
  "private-gemm-x86",
- "pulp 0.21.4",
+ "pulp 0.21.5",
  "rand",
  "rand_distr",
  "rayon",
@@ -1006,9 +1018,9 @@ dependencies = [
 
 [[package]]
 name = "faer-traits"
-version = "0.22.0"
+version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1f92ec45f0c0920f6ddac861410894398d0983aacd09902358f44ec0ec2c26f"
+checksum = "54febfcbb90edaab562d85447a94d500f1601f11db0b30d27da87ed6542c8f91"
 dependencies = [
  "bytemuck",
  "dyn-stack",
@@ -1017,7 +1029,7 @@ dependencies = [
  "libm",
  "num-complex",
  "num-traits",
- "pulp 0.21.4",
+ "pulp 0.21.5",
  "qd",
  "reborrow",
 ]
@@ -1243,7 +1255,7 @@ dependencies = [
  "num-traits",
  "once_cell",
  "paste",
- "pulp 0.21.4",
+ "pulp 0.21.5",
  "raw-cpuid",
  "rayon",
  "seq-macro",
@@ -1943,9 +1955,9 @@ dependencies = [
 
 [[package]]
 name = "libm"
-version = "0.2.11"
+version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8355be11b20d696c8f18f6cc018c4e372165b1fa8126cef092399c9951984ffa"
+checksum = "c9627da5196e5d8ed0b0495e61e518847578da83483c37288316d9b2e03a7f72"
 
 [[package]]
 name = "libredox"
@@ -2906,9 +2918,9 @@ dependencies = [
 
 [[package]]
 name = "pulp"
-version = "0.21.4"
+version = "0.21.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95fb7a99b37aaef4c7dd2fd15a819eb8010bfc7a2c2155230d51f497316cad6d"
+checksum = "96b86df24f0a7ddd5e4b95c94fc9ed8a98f1ca94d3b01bdce2824097e7835907"
 dependencies = [
  "bytemuck",
  "cfg-if",
@@ -2940,7 +2952,7 @@ dependencies = [
  "bytemuck",
  "libm",
  "num-traits",
- "pulp 0.21.4",
+ "pulp 0.21.5",
 ]
 
 [[package]]
@@ -3974,11 +3986,11 @@ checksum = "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be"
 [[package]]
 name = "uvat-rs"
 version = "0.1.0"
-source = "git+https://github.com/Lieunoir/uvat-rs?rev=c4b1585#c4b1585c7c04e48cf43854211a627c52cbf1c683"
+source = "git+https://github.com/Lieunoir/uvat-rs?rev=f7723f5#f7723f5db1be203670503e98a7d4697e5bac15ef"
 dependencies = [
  "faer",
  "faer-traits",
- "pulp 0.18.22",
+ "pulp 0.21.5",
  "rayon",
 ]
 
