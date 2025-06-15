@@ -5,7 +5,10 @@ edition = "2024"
 
 [dependencies]
 uvat-rs = { git = "https://github.com/Lieunoir/uvat-rs", rev = "f7723f5" }
-deuxfleurs = { git = "https://github.com/Lieunoir/deuxfleurs", rev = "4e1457d" }
+deuxfleurs = { git = "https://github.com/Lieunoir/deuxfleurs", rev = "1c05206", features = [
+    "logger",
+    "obj_button",
+] }
 faer = "0.22.6"
 pollster = "0.4.0"
 

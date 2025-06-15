@@ -134,8 +134,8 @@ pub async fn run() {
     let url_path = option_env!("URL_PATH").unwrap_or(".");
     let mesh_path = std::path::Path::new(url_path).join("./assets/camelhead.obj");
     let mesh_str = mesh_path.to_str().unwrap();
-    let (v, f) = load_mesh(mesh_str).await.unwrap();
     let mut handle = deuxfleurs::init();
+    let (v, f) = load_mesh(mesh_str).await.unwrap();
     handle.register_surface("Surface".into(), v, f);
     handle.run(1080, 720, None, Settings::default(), callback);
 }
