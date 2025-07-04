@@ -4,7 +4,7 @@ use deuxfleurs::egui::Widget;
 use deuxfleurs::load_mesh;
 use deuxfleurs::types::SurfaceIndices;
 use deuxfleurs::ui::LoadObjButton;
-use deuxfleurs::{RunningState, Settings, StateHandle, egui};
+use deuxfleurs::{RunningState, Settings, egui};
 use uvat_rs::utils::{build_edge_map, compute_tutte_parameterization, get_boundary_loop};
 use uvat_rs::{UVAT, UVATOptions};
 
@@ -30,7 +30,7 @@ pub async fn run() {
         if running {
             let mut v_values = v_values.borrow_mut();
             let mut p = p.borrow_mut();
-            let surface = state.get_surface_mut("Surface").unwrap();
+            let mut surface = state.get_surface_mut("Surface").unwrap();
             let f = &surface.geometry().indices;
             let f = match f {
                 SurfaceIndices::Triangles(f) => f.clone(),
@@ -52,14 +52,13 @@ pub async fn run() {
                 .iter()
                 .map(|&i| [p[i as usize][0], p[i as usize][1]])
                 .collect();
-            surface.add_corner_uv_map("UV map".into(), new_uv);
-            surface.add_face_scalar("V".into(), &*v_values);
-            surface.set_data(Some("V".into()));
-            let param = state
-                .register_surface("UVAT parameterization".into(), p, f)
-                .show_edges(true);
-            param.add_face_scalar("V".to_string(), &*v_values);
-            param.set_data(Some("V".into()));
+            surface.add_corner_uv_map("UV map", new_uv);
+            surface.add_face_scalar("V", &*v_values);
+            surface.set_data(Some("V"));
+            let mut param = state.register_surface("UVAT parameterization", p, f);
+            param.show_edges(true);
+            param.add_face_scalar("V", &*v_values);
+            param.set_data(Some("V"));
         }
 
         ui.label("Load a triangular mesh homeomorphic to a disk or of genus 0, then run UVAT (this may take a while to compute).");
@@ -83,7 +82,7 @@ pub async fn run() {
                 .clamping(egui::SliderClamping::Never),
         );
         if ui.add(egui::Button::new("UVAT")).clicked() {
-            if let Some(surface) = state.get_surface_mut("Surface") {
+            if let Some(mut surface) = state.get_surface_mut("Surface") {
                 let mut v: Vec<_> = surface
                     .geometry()
                     .vertices
@@ -113,7 +112,7 @@ pub async fn run() {
                     .iter()
                     .map(|&i| [tutte[i as usize][0] as f32, tutte[i as usize][1] as f32])
                     .collect();
-                surface.add_corner_uv_map("Tutte parameterization".into(), verts_c);
+                surface.add_corner_uv_map("Tutte parameterization", verts_c);
 
                 *p.borrow_mut() = tutte;
                 *v_values.borrow_mut() = vec![1.; f.len()];
@@ -134,8 +133,8 @@ pub async fn run() {
     let url_path = option_env!("URL_PATH").unwrap_or(".");
     let mesh_path = std::path::Path::new(url_path).join("./assets/camelhead.obj");
     let mesh_str = mesh_path.to_str().unwrap();
-    let mut handle = deuxfleurs::init();
+    let mut handle = deuxfleurs::init(Settings::default()).with_callback(callback);
     let (v, f) = load_mesh(mesh_str).await.unwrap();
-    handle.register_surface("Surface".into(), v, f);
-    handle.run(1080, 720, None, Settings::default(), callback);
+    handle.register_surface("Surface", v, f);
+    handle.run(1080, 720, Some("deuxfleurs"));
 }
