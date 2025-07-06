@@ -20,16 +20,15 @@ pub async fn run() {
     // Temp fix for performance
     faer::set_global_parallelism(faer::Par::Rayon(core::num::NonZero::new(1).unwrap()));
     let mut options = UVATOptions::default();
-    let solver: std::cell::RefCell<Option<UVAT<u32>>> = std::cell::RefCell::new(None);
-    let v_values = std::cell::RefCell::new(Vec::new());
-    let p = std::cell::RefCell::new(Vec::new());
+    let mut solver: Option<UVAT<u32>> = None;
+    let mut v_values = Vec::new();
+    let mut p = Vec::new();
     let mut running = false;
     let mut ran_once = false;
 
     let callback = move |ui: &mut egui::Ui, state: &mut RunningState| {
         if running {
-            let mut v_values = v_values.borrow_mut();
-            let mut p = p.borrow_mut();
+            //let mut v_values = v_values.borrow_mut();
             let mut surface = state.get_surface_mut("Surface").unwrap();
             let f = &surface.geometry().indices;
             let f = match f {
@@ -37,7 +36,6 @@ pub async fn run() {
                 _ => panic!(),
             };
             running = !solver
-                .borrow_mut()
                 .as_mut()
                 .unwrap()
                 .single_step(&f, &mut p, &mut v_values);
@@ -114,10 +112,10 @@ pub async fn run() {
                     .collect();
                 surface.add_corner_uv_map("Tutte parameterization", verts_c);
 
-                *p.borrow_mut() = tutte;
-                *v_values.borrow_mut() = vec![1.; f.len()];
-                *solver.borrow_mut() =
-                    Some(UVAT::new(&v, &f, &mut *p.borrow_mut(), options.clone()));
+                p = tutte;
+                //*v_values.borrow_mut() = vec![1.; f.len()];
+                v_values = vec![1.; f.len()];
+                solver = Some(UVAT::new(&v, &f, &mut p, options.clone()));
                 running = true;
                 ran_once = true;
             }
