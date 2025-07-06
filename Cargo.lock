@@ -754,7 +754,7 @@ checksum = "930c7171c8df9fb1782bdf9b918ed9ed2d33d1d22300abb754f9085bc48bf8e8"
 [[package]]
 name = "deuxfleurs"
 version = "0.1.0"
-source = "git+https://github.com/Lieunoir/deuxfleurs?rev=72561ff#72561ff460cb66bc9e6602364ac455bd5667d098"
+source = "git+https://github.com/Lieunoir/deuxfleurs?rev=5634888#56348887d1f9c14cd3ad92790e0d36083a32dbe3"
 dependencies = [
  "atoi_radix10",
  "bytemuck",
