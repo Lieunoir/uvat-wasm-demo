@@ -754,7 +754,8 @@ checksum = "930c7171c8df9fb1782bdf9b918ed9ed2d33d1d22300abb754f9085bc48bf8e8"
 [[package]]
 name = "deuxfleurs"
 version = "0.1.0"
-source = "git+https://github.com/Lieunoir/deuxfleurs?rev=5634888#56348887d1f9c14cd3ad92790e0d36083a32dbe3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aa6988d1060e68e13ae9716d730b46c2e27e986b3120688b40e64a1cd2cfacbc"
 dependencies = [
  "atoi_radix10",
  "bytemuck",

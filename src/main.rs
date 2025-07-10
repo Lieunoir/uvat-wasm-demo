@@ -4,7 +4,7 @@ use deuxfleurs::egui::Widget;
 use deuxfleurs::load_mesh;
 use deuxfleurs::types::SurfaceIndices;
 use deuxfleurs::ui::LoadObjButton;
-use deuxfleurs::{RunningState, Settings, egui};
+use deuxfleurs::{RunningState, egui};
 use uvat_rs::utils::{build_edge_map, compute_tutte_parameterization, get_boundary_loop};
 use uvat_rs::{UVAT, UVATOptions};
 
@@ -131,7 +131,7 @@ pub async fn run() {
     let url_path = option_env!("URL_PATH").unwrap_or(".");
     let mesh_path = std::path::Path::new(url_path).join("./assets/camelhead.obj");
     let mesh_str = mesh_path.to_str().unwrap();
-    let mut handle = deuxfleurs::init(Settings::default()).with_callback(callback);
+    let mut handle = deuxfleurs::init().with_callback(callback);
     let (v, f) = load_mesh(mesh_str).await.unwrap();
     handle.register_surface("Surface", v, f);
     handle.run(1080, 720, Some("deuxfleurs"));
